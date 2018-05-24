@@ -1,3 +1,5 @@
+package scott.transource.spec;
+
 import scott.barleydb.api.core.types.JdbcType;
 import scott.barleydb.api.core.types.Nullable;
 import scott.barleydb.api.specification.NodeSpec;
@@ -7,6 +9,8 @@ import scott.barleydb.build.specification.staticspec.Entity;
 import scott.barleydb.build.specification.staticspec.Enumeration;
 
 import static scott.barleydb.api.specification.CoreSpec.*;
+
+import org.example.etl.EtlSpec.XmlMapping;
 
 
 /*-
@@ -45,6 +49,10 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
 
   public TransourceSpec() {
     super("scott.transource");
+    renameForeignKeyConstraint(new StaticRelation(LanguageConversionSkill.from), "FK_LANG_CONV_SKILL_FROM");
+    renameForeignKeyConstraint(new StaticRelation(LanguageConversionSkill.to), "FK_LANG_CONV_SKILL_TO");
+    renameForeignKeyConstraint(new StaticRelation(WorkItem.fromLanguage), "FK_WORKITEM_LANG_FROM");
+    renameForeignKeyConstraint(new StaticRelation(WorkItem.toLanguage), "FK_WORK_ITEM_LANG_TO");
   }
 
   public interface StandardEntity {
@@ -55,8 +63,8 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
 
   @Enumeration(JdbcType.INT)
   public class WorkType {
-    public static int TRANSLATION = 1;
-    public static int INTERPRETING = 2;
+    public static final int TRANSLATION = 1;
+    public static final int INTERPRETING = 2;
   }
 
   @Enumeration(JdbcType.INT)
@@ -95,7 +103,7 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
    *
    */
   @Entity("TS_LANG_SKILL")
-  public static class LanguageConversionSkill {
+  public static class LanguageConversionSkill implements StandardEntity {
 
     /**
      * the service provider who has the skill
@@ -104,11 +112,11 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
     /**
      * from language
      */
-    public static final NodeSpec from = mandatoryRefersTo(Language.class);
+    public static final NodeSpec from = mandatoryRefersTo(Language.class, "FROM_LANG");
     /**
      * to language
      */
-    public static final NodeSpec to = mandatoryRefersTo(Language.class);
+    public static final NodeSpec to = mandatoryRefersTo(Language.class, "TO_LANG");
     /**
      * work type
      */
@@ -233,12 +241,12 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
     /**
      * from language
      */
-    public static final NodeSpec fromLanguage = mandatoryEnum(Language.class);
+    public static final NodeSpec fromLanguage = mandatoryRefersTo(Language.class, "FROM_LANG");
 
     /**
      * to language
      */
-    public static final NodeSpec toLanguage = mandatoryEnum(Language.class);
+    public static final NodeSpec toLanguage = mandatoryRefersTo(Language.class, "TO_LANG");
 
     /**
      * interpreting or translating
