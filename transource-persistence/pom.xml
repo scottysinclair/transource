@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>scott.transource-persistence</artifactId>
   <name>Transource Persistence</name>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
 
   <parent>
@@ -16,4 +16,11 @@
   </parent>
 
 
+  <dependencies>
+  	<dependency>
+  		<groupId>scott</groupId>
+  		<artifactId>scott.barleydb</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>

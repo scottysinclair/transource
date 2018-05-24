@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>scott.transource-services</artifactId>
   <name>Transource Services</name>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
 
   <parent>
