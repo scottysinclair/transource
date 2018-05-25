@@ -10,7 +10,7 @@ import scott.transource.model.ChargeType;
 /**
  * Generated from Entity Specification
  *
- * @author scott
+ * @author scott.sinclair
  */
 public class WorkItemDto extends BaseDto {
   private static final long serialVersionUID = 1L;

@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+    livedb:
+      image: vvl-postgres
+      ports:
+        - "5433:5432"
+      environment:
+        - POSTGRES_PASSWORD=password
+
+    archdb:
+      image: vvl-postgres
+      ports:
+        - "5434:5432"
+      environment:
+        - POSTGRES_PASSWORD=password        

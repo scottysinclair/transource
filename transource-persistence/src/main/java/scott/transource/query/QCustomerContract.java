@@ -12,7 +12,7 @@ import scott.transource.query.QWorkItem;
 /**
  * Generated from Entity Specification
  *
- * @author scott
+ * @author scott.sinclair
  */
 public class QCustomerContract extends QueryObject<CustomerContract> {
   private static final long serialVersionUID = 1L;

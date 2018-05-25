@@ -17,7 +17,7 @@ import scott.barleydb.api.core.proxy.ToManyNodeProxyHelper;
 /**
  * Generated from Entity Specification
  *
- * @author scott
+ * @author scott.sinclair
  */
 public class ServiceProvider extends AbstractCustomEntityProxy {
   private static final long serialVersionUID = 1L;

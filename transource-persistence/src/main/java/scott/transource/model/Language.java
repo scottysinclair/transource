@@ -7,7 +7,7 @@ import scott.barleydb.api.core.proxy.AbstractCustomEntityProxy;
 /**
  * Generated from Entity Specification
  *
- * @author scott
+ * @author scott.sinclair
  */
 public class Language extends AbstractCustomEntityProxy {
   private static final long serialVersionUID = 1L;

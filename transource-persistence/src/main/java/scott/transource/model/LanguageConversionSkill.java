@@ -9,7 +9,7 @@ import scott.barleydb.api.core.proxy.RefNodeProxyHelper;
 /**
  * Generated from Entity Specification
  *
- * @author scott
+ * @author scott.sinclair
  */
 public class LanguageConversionSkill extends AbstractCustomEntityProxy {
   private static final long serialVersionUID = 1L;
