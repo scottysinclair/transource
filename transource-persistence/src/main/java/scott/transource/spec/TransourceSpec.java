@@ -10,8 +10,6 @@ import scott.barleydb.build.specification.staticspec.Enumeration;
 
 import static scott.barleydb.api.specification.CoreSpec.*;
 
-import org.example.etl.EtlSpec.XmlMapping;
-
 
 /*-
  * #%L

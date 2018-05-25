@@ -16,4 +16,26 @@
     <relativePath>../</relativePath>
   </parent>
 
+  <dependencies>
+      <dependency>
+          <groupId>scott</groupId>
+          <artifactId>scott.barleydb</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+          <groupId>scott</groupId>
+          <artifactId>scott.transource-services</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+
+         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+       <dependency>
+           <groupId>org.postgresql</groupId>
+           <artifactId>postgresql</artifactId>
+           <version>42.0.0</version>
+       </dependency>
+
+
+  </dependencies>
+
 </project>
