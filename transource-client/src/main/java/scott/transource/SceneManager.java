@@ -9,6 +9,7 @@ import java.util.Objects;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import scott.transource.customercontract.CustomerContractDetailsController;
 import scott.transource.welcome.WelcomePageController;
 
 public class SceneManager {
@@ -23,14 +24,16 @@ public class SceneManager {
 		this.stage = stage;
 		this.env = env;
 		fxmls.put(WelcomePageController.class, "scott/transource/welcome/welcome.fxml");
+		fxmls.put(CustomerContractDetailsController.class, "scott/transource/customercontract/customercontractdetails.fxml");
+		
+//		getOrLoadScene(WelcomePageController.class);
+//		getOrLoadScene(CustomerContractDetailsController.class);
 	}
 	
 	public void showScene(Class<?> controller) {
 		LoadedScene<?> loadedScene = getOrLoadScene(controller);
 		stage.setScene(loadedScene.getScene());
-		stage.show();
 	}
-	
 	
 	private <T> LoadedScene<T> getOrLoadScene(Class<T> controllerClass) {
 		LoadedScene<T> ls = (LoadedScene<T>)loadedScenes.get(controllerClass);

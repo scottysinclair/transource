@@ -28,8 +28,12 @@ public class TransourceApplication extends Application {
 	 
 	 SceneManager sceneManager = new SceneManager(stage, env);
 	 
+	 env.addObject(sceneManager);
+	 
 	 stage.setTitle("FXML Welcome");
 	 sceneManager.showScene(WelcomePageController.class);
+	 stage.show();
+
   }
   
   public static void main(String args[]) throws Exception {

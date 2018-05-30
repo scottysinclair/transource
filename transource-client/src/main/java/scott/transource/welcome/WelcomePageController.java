@@ -19,9 +19,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import scott.transource.ClientEnvironment;
+import scott.transource.SceneManager;
+import scott.transource.customercontract.CustomerContractDetailsController;
 import scott.transource.dto.BillableWorkDto;
 import scott.transource.dto.ContractDto;
 import scott.transource.dto.CustomerDto;
@@ -31,6 +35,9 @@ import scott.transource.service.dto.FullSummaryReport;
 import scott.transource.service.stream.Stream;
 
 public class WelcomePageController implements Initializable {
+
+	
+	private final ClientEnvironment env;
 
 	private final TransourceReportingService reportingService;
 
@@ -79,8 +86,9 @@ public class WelcomePageController implements Initializable {
 	private final ObservableList<Deadline> deadlinesTableData = FXCollections.observableArrayList();
 	private final ObservableList<CustomerContractRow> customerContractsTableData = FXCollections.observableArrayList();
 
-	public WelcomePageController(TransourceReportingService reportingService, Stage stage) {
-		this.reportingService = reportingService;
+	public WelcomePageController(ClientEnvironment env, Stage stage) {
+		this.env = env;
+		this.reportingService = env.getObject(TransourceReportingService.class);
 		this.stage = stage;
 	}
 
@@ -198,6 +206,17 @@ public class WelcomePageController implements Initializable {
 		 customerContractsTableData.addAll( contracts );
 		 System.out.println(contracts);
 		 customerContractsTable.setItems(customerContractsTableData);
+		 
+		 customerContractsTable.setRowFactory(tv -> {
+			 TableRow<CustomerContractRow> row = new TableRow<>();
+			 row.setOnMouseClicked(e -> {
+				 if (e.getClickCount() == 2 && !row.isEmpty()) {
+					 env.getObject(SceneManager.class).showScene(CustomerContractDetailsController.class);
+					 System.out.println("click");
+				 }});
+			 return row;
+		 });	
+		 
 		 
 		 
 	}
