@@ -14,6 +14,7 @@ public class Feedback extends AbstractCustomEntityProxy {
 
   private final ValueNode id;
   private final ValueNode modifiedAt;
+  private final ValueNode partnerType;
   private final ValueNode rating;
   private final ValueNode info;
 
@@ -21,6 +22,7 @@ public class Feedback extends AbstractCustomEntityProxy {
     super(entity);
     id = entity.getChild("id", ValueNode.class, true);
     modifiedAt = entity.getChild("modifiedAt", ValueNode.class, true);
+    partnerType = entity.getChild("partnerType", ValueNode.class, true);
     rating = entity.getChild("rating", ValueNode.class, true);
     info = entity.getChild("info", ValueNode.class, true);
   }
@@ -35,6 +37,14 @@ public class Feedback extends AbstractCustomEntityProxy {
 
   public void setModifiedAt(Long modifiedAt) {
     this.modifiedAt.setValue(modifiedAt);
+  }
+
+  public scott.transource.model.PartnerType getPartnerType() {
+    return partnerType.getValue();
+  }
+
+  public void setPartnerType(scott.transource.model.PartnerType partnerType) {
+    this.partnerType.setValue(partnerType);
   }
 
   public scott.transource.model.FeedbackRating getRating() {

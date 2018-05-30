@@ -4,6 +4,7 @@ import scott.barleydb.api.query.JoinType;
 import scott.barleydb.api.query.QProperty;
 import scott.barleydb.api.query.QueryObject;
 import scott.transource.model.Feedback;
+import scott.transource.model.PartnerType;
 import scott.transource.model.FeedbackRating;
 
 /**
@@ -28,6 +29,10 @@ public class QFeedback extends QueryObject<Feedback> {
 
   public QProperty<Long> modifiedAt() {
     return new QProperty<Long>(this, "modifiedAt");
+  }
+
+  public QProperty<scott.transource.model.PartnerType> partnerType() {
+    return new QProperty<scott.transource.model.PartnerType>(this, "partnerType");
   }
 
   public QProperty<scott.transource.model.FeedbackRating> rating() {

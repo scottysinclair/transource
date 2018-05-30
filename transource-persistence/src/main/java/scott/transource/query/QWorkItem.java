@@ -4,11 +4,9 @@ import scott.barleydb.api.query.JoinType;
 import scott.barleydb.api.query.QProperty;
 import scott.barleydb.api.query.QueryObject;
 import scott.transource.model.WorkItem;
-import scott.transource.query.QCustomerContract;
-import scott.transource.model.ChargeType;
-import scott.transource.query.QLanguage;
 import scott.transource.model.WorkType;
-import scott.transource.query.QServiceProviderContract;
+import scott.transource.query.QBillableWork;
+import scott.transource.query.QLanguage;
 
 /**
  * Generated from Entity Specification
@@ -34,34 +32,56 @@ public class QWorkItem extends QueryObject<WorkItem> {
     return new QProperty<Long>(this, "modifiedAt");
   }
 
-  public QProperty<Long> customerContractId() {
-    return new QProperty<Long>(this, "customerContract");
+  public QProperty<scott.transource.model.WorkType> workType() {
+    return new QProperty<scott.transource.model.WorkType>(this, "workType");
   }
 
-  public QCustomerContract joinToCustomerContract() {
-    QCustomerContract customerContract = new QCustomerContract();
-    addLeftOuterJoin(customerContract, "customerContract");
-    return customerContract;
+  public QProperty<String> description() {
+    return new QProperty<String>(this, "description");
   }
 
-  public QCustomerContract joinToCustomerContract(JoinType joinType) {
-    QCustomerContract customerContract = new QCustomerContract();
-    addJoin(customerContract, "customerContract", joinType);
-    return customerContract;
+  public QProperty<Long> customerBillableId() {
+    return new QProperty<Long>(this, "customerBillable");
   }
 
-  public QCustomerContract existsCustomerContract() {
-    QCustomerContract customerContract = new QCustomerContract(this);
-    addExists(customerContract, "customerContract");
-    return customerContract;
+  public QBillableWork joinToCustomerBillable() {
+    QBillableWork customerBillable = new QBillableWork();
+    addLeftOuterJoin(customerBillable, "customerBillable");
+    return customerBillable;
   }
 
-  public QProperty<scott.transource.model.ChargeType> custChargeType() {
-    return new QProperty<scott.transource.model.ChargeType>(this, "custChargeType");
+  public QBillableWork joinToCustomerBillable(JoinType joinType) {
+    QBillableWork customerBillable = new QBillableWork();
+    addJoin(customerBillable, "customerBillable", joinType);
+    return customerBillable;
   }
 
-  public QProperty<Integer> custChargeAmount() {
-    return new QProperty<Integer>(this, "custChargeAmount");
+  public QBillableWork existsCustomerBillable() {
+    QBillableWork customerBillable = new QBillableWork(this);
+    addExists(customerBillable, "customerBillable");
+    return customerBillable;
+  }
+
+  public QProperty<Long> serviceProviderBillableId() {
+    return new QProperty<Long>(this, "serviceProviderBillable");
+  }
+
+  public QBillableWork joinToServiceProviderBillable() {
+    QBillableWork serviceProviderBillable = new QBillableWork();
+    addLeftOuterJoin(serviceProviderBillable, "serviceProviderBillable");
+    return serviceProviderBillable;
+  }
+
+  public QBillableWork joinToServiceProviderBillable(JoinType joinType) {
+    QBillableWork serviceProviderBillable = new QBillableWork();
+    addJoin(serviceProviderBillable, "serviceProviderBillable", joinType);
+    return serviceProviderBillable;
+  }
+
+  public QBillableWork existsServiceProviderBillable() {
+    QBillableWork serviceProviderBillable = new QBillableWork(this);
+    addExists(serviceProviderBillable, "serviceProviderBillable");
+    return serviceProviderBillable;
   }
 
   public QProperty<Long> fromLanguageId() {
@@ -106,47 +126,5 @@ public class QWorkItem extends QueryObject<WorkItem> {
     QLanguage toLanguage = new QLanguage(this);
     addExists(toLanguage, "toLanguage");
     return toLanguage;
-  }
-
-  public QProperty<scott.transource.model.WorkType> workType() {
-    return new QProperty<scott.transource.model.WorkType>(this, "workType");
-  }
-
-  public QProperty<Long> serviceProviderContractId() {
-    return new QProperty<Long>(this, "serviceProviderContract");
-  }
-
-  public QServiceProviderContract joinToServiceProviderContract() {
-    QServiceProviderContract serviceProviderContract = new QServiceProviderContract();
-    addLeftOuterJoin(serviceProviderContract, "serviceProviderContract");
-    return serviceProviderContract;
-  }
-
-  public QServiceProviderContract joinToServiceProviderContract(JoinType joinType) {
-    QServiceProviderContract serviceProviderContract = new QServiceProviderContract();
-    addJoin(serviceProviderContract, "serviceProviderContract", joinType);
-    return serviceProviderContract;
-  }
-
-  public QServiceProviderContract existsServiceProviderContract() {
-    QServiceProviderContract serviceProviderContract = new QServiceProviderContract(this);
-    addExists(serviceProviderContract, "serviceProviderContract");
-    return serviceProviderContract;
-  }
-
-  public QProperty<scott.transource.model.ChargeType> spChargeType() {
-    return new QProperty<scott.transource.model.ChargeType>(this, "spChargeType");
-  }
-
-  public QProperty<Integer> spChargeAmount() {
-    return new QProperty<Integer>(this, "spChargeAmount");
-  }
-
-  public QProperty<String> description() {
-    return new QProperty<String>(this, "description");
-  }
-
-  public QProperty<Boolean> completed() {
-    return new QProperty<Boolean>(this, "completed");
   }
 }

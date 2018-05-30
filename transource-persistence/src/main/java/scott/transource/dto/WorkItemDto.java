@@ -3,9 +3,7 @@ package scott.transource.dto;
 import scott.barleydb.api.dto.BaseDto;
 
 
-import scott.transource.model.ChargeType;
 import scott.transource.model.WorkType;
-import scott.transource.model.ChargeType;
 
 /**
  * Generated from Entity Specification
@@ -17,17 +15,12 @@ public class WorkItemDto extends BaseDto {
 
   private Long id;
   private Long modifiedAt;
-  private CustomerContractDto customerContract;
-  private ChargeType custChargeType;
-  private Integer custChargeAmount;
+  private WorkType workType;
+  private String description;
+  private BillableWorkDto customerBillable;
+  private BillableWorkDto serviceProviderBillable;
   private LanguageDto fromLanguage;
   private LanguageDto toLanguage;
-  private WorkType workType;
-  private ServiceProviderContractDto serviceProviderContract;
-  private ChargeType spChargeType;
-  private Integer spChargeAmount;
-  private String description;
-  private Boolean completed;
 
   public WorkItemDto() {
   }
@@ -48,28 +41,36 @@ public class WorkItemDto extends BaseDto {
     this.modifiedAt = modifiedAt;
   }
 
-  public CustomerContractDto getCustomerContract() {
-    return customerContract;
+  public scott.transource.model.WorkType getWorkType() {
+    return workType;
   }
 
-  public void setCustomerContract(CustomerContractDto customerContract) {
-    this.customerContract = customerContract;
+  public void setWorkType(scott.transource.model.WorkType workType) {
+    this.workType = workType;
   }
 
-  public scott.transource.model.ChargeType getCustChargeType() {
-    return custChargeType;
+  public String getDescription() {
+    return description;
   }
 
-  public void setCustChargeType(scott.transource.model.ChargeType custChargeType) {
-    this.custChargeType = custChargeType;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
-  public Integer getCustChargeAmount() {
-    return custChargeAmount;
+  public BillableWorkDto getCustomerBillable() {
+    return customerBillable;
   }
 
-  public void setCustChargeAmount(Integer custChargeAmount) {
-    this.custChargeAmount = custChargeAmount;
+  public void setCustomerBillable(BillableWorkDto customerBillable) {
+    this.customerBillable = customerBillable;
+  }
+
+  public BillableWorkDto getServiceProviderBillable() {
+    return serviceProviderBillable;
+  }
+
+  public void setServiceProviderBillable(BillableWorkDto serviceProviderBillable) {
+    this.serviceProviderBillable = serviceProviderBillable;
   }
 
   public LanguageDto getFromLanguage() {
@@ -87,55 +88,7 @@ public class WorkItemDto extends BaseDto {
   public void setToLanguage(LanguageDto toLanguage) {
     this.toLanguage = toLanguage;
   }
-
-  public scott.transource.model.WorkType getWorkType() {
-    return workType;
-  }
-
-  public void setWorkType(scott.transource.model.WorkType workType) {
-    this.workType = workType;
-  }
-
-  public ServiceProviderContractDto getServiceProviderContract() {
-    return serviceProviderContract;
-  }
-
-  public void setServiceProviderContract(ServiceProviderContractDto serviceProviderContract) {
-    this.serviceProviderContract = serviceProviderContract;
-  }
-
-  public scott.transource.model.ChargeType getSpChargeType() {
-    return spChargeType;
-  }
-
-  public void setSpChargeType(scott.transource.model.ChargeType spChargeType) {
-    this.spChargeType = spChargeType;
-  }
-
-  public Integer getSpChargeAmount() {
-    return spChargeAmount;
-  }
-
-  public void setSpChargeAmount(Integer spChargeAmount) {
-    this.spChargeAmount = spChargeAmount;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public Boolean getCompleted() {
-    return completed;
-  }
-
-  public void setCompleted(Boolean completed) {
-    this.completed = completed;
-  }
   public String toString() {
-    return getClass().getSimpleName() + "[id = " + id + "]";
+    return getClass().getSimpleName() + "[id = " + getId() + "]";
   }
 }

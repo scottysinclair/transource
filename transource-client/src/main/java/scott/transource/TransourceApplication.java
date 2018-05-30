@@ -13,47 +13,23 @@ import scott.barleydb.api.core.entity.EntityContext;
 import scott.barleydb.api.persist.PersistRequest;
 import scott.barleydb.bootstrap.EnvironmentDef;
 import scott.transource.model.Language;
-import scott.transource.service.MaintenceService;
 import scott.transource.spec.TransourceSpec;
+import scott.transource.welcome.WelcomePageController;
 
-@SuppressWarnings("restriction")
 public class TransourceApplication extends Application {
 
-  private static final boolean real =  true;
+  private static final boolean real =  false;
   private static final boolean dropAndCreate =  false;
   private static Environment env;
 
   @Override
   public void start(Stage stage) throws Exception {
-    FXMLLoader rootLoader = new FXMLLoader( getClass().getResource("TransourceApplication.fxml") );
-    FXMLLoader settingsLoader = new FXMLLoader( getClass().getResource("TransourceApplication.fxml") );
-    
-    
-    Map<Class<?>, Object> controllers = new HashMap<>();
-
-    MaintenceService service = new MaintenceService(env);
-    RootController rootController = new RootController(service, stage);
-    
-    //rootController.setOpenSettings(this::openSettings);
-    
-    SettingsController settingsController = new SettingsController(service);
-    controllers.put(RootController.class, rootController);
-    controllers.put(SettingsController.class, settingsController);
-
-    rootLoader.setControllerFactory(controllers::get);
-
-    Parent mainSceneRoot = rootLoader.load();
-    Scene mainScene = new Scene(mainSceneRoot, 300, 275);
-    mainScene.getStylesheets().add("scott/transource/stylesheet.css");
-    
-    Parent settingSceneRoot = rootLoader.load();
-    Scene settingsScene = new Scene(settingSceneRoot, 300, 275);
-    settingsScene.getStylesheets().add("scott/transource/stylesheet.css");
-    
-
-    stage.setTitle("FXML Welcome");
-    stage.setScene(mainScene);
-    stage.show();
+	 ClientEnvironment env = new  ClientEnvironment(stage);
+	 
+	 SceneManager sceneManager = new SceneManager(stage, env);
+	 
+	 stage.setTitle("FXML Welcome");
+	 sceneManager.showScene(WelcomePageController.class);
   }
   
   public static void main(String args[]) throws Exception {

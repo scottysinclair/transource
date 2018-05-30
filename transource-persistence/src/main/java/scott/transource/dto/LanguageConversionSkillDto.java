@@ -80,6 +80,6 @@ public class LanguageConversionSkillDto extends BaseDto {
     this.competency = competency;
   }
   public String toString() {
-    return getClass().getSimpleName() + "[id = " + id + "]";
+    return getClass().getSimpleName() + "[id = " + getId() + "]";
   }
 }

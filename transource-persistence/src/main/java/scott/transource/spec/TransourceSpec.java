@@ -1,16 +1,21 @@
 package scott.transource.spec;
 
+import static scott.barleydb.api.specification.CoreSpec.mandatoryEnum;
+import static scott.barleydb.api.specification.CoreSpec.mandatoryFixedEnum;
+import static scott.barleydb.api.specification.CoreSpec.mandatoryRefersTo;
+import static scott.barleydb.api.specification.CoreSpec.optionallyRefersTo;
+import static scott.barleydb.api.specification.CoreSpec.ownsMany;
+import static scott.barleydb.api.specification.CoreSpec.refersToMany;
+
 import scott.barleydb.api.core.types.JdbcType;
 import scott.barleydb.api.core.types.Nullable;
 import scott.barleydb.api.specification.NodeSpec;
 import scott.barleydb.bootstrap.GenerateModels;
+import scott.barleydb.build.specification.staticspec.AbstractEntity;
 import scott.barleydb.build.specification.staticspec.CommonDefaultsPlatformSpec;
 import scott.barleydb.build.specification.staticspec.Entity;
 import scott.barleydb.build.specification.staticspec.Enumeration;
-
-import static scott.barleydb.api.specification.CoreSpec.*;
-
-import org.example.acl.AclSpec.TopLevelModel;
+import scott.barleydb.build.specification.staticspec.ExtendsEntity;
 
 
 /*-
@@ -53,6 +58,8 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
     renameForeignKeyConstraint(new StaticRelation(LanguageConversionSkill.to), "FK_LANG_CONV_SKILL_TO");
     renameForeignKeyConstraint(new StaticRelation(WorkItem.fromLanguage), "FK_WORKITEM_LANG_FROM");
     renameForeignKeyConstraint(new StaticRelation(WorkItem.toLanguage), "FK_WORK_ITEM_LANG_TO");
+    renameForeignKeyConstraint(new StaticRelation(WorkItem.customerBillable), "FK_WORKITEM_CUST_BILL");
+    renameForeignKeyConstraint(new StaticRelation(WorkItem.serviceProviderBillable), "FK_WORK_ITEM_SERVP_BILL");
   }
 
   public interface StandardEntity {
@@ -72,12 +79,19 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
     public static final String NEW_WORK_ITEM = "NEW_WORK_ITEM";
   }
 
-  @Enumeration(JdbcType.INT)
+  @Enumeration(value = JdbcType.VARCHAR, length = 15)
   public static class ChargeType {
-      public static int PER_LINE = 1;
-      public static int PAUSHALL = 2;
-      public static int PER_HOUR = 3;
+      public static String PER_LINE = "PER_LINE";
+      public static String PAUSHALL = "PAUSHALL";
+      public static String PER_HOUR = "PER_HOUR";
   }
+
+  @Enumeration(value = JdbcType.VARCHAR, length = 20)
+  public static class PartnerType {
+      public static String CUSTOMER = "CUST";
+      public static String SERVICE_PROVIDER = "SERVP";
+  }
+	  
 
   @Enumeration(JdbcType.INT)
   public static class FeedbackRating {
@@ -97,9 +111,9 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
 
   @Entity("TS_FEEDBACK")
   public static class Feedback implements StandardEntity {
+    public static final NodeSpec partnerType  = mandatoryEnum(PartnerType.class);
     public static final NodeSpec rating = mandatoryEnum(FeedbackRating.class);
     public static final NodeSpec info = mandatoryVarchar(1500);
-
   }
 
   /**
@@ -132,46 +146,82 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
     public static final NodeSpec competency = mandatoryIntegerValue();
 
   }
+  
+  @Entity("TS_CONTACT_PERSON")
+  public static class ContactPerson implements StandardEntity {
+	    public static final NodeSpec firstName = name();
+
+	    public static final NodeSpec lastName = name();
+
+	    public static final NodeSpec emailAddress = mandatoryVarchar100();
+  }
+
+  @AbstractEntity("TS_PARTNER")
+  public static class Partner implements StandardEntity {
+	  
+		public static final NodeSpec partnerType = mandatoryEnum(PartnerType.class);
+	  
+		public static final NodeSpec contact = mandatoryRefersTo(ContactPerson.class);
+
+	    public static final NodeSpec contracts = refersToMany(Contract.class, Contract.partner);
+  }
+
 
   /**
    * A service provider which the user uses to fullfill a client contract.
    * @author scott
    *
    */
-  @Entity("TS_SERVICE_PROVIDER")
-  public static class ServiceProvider implements StandardEntity {
-
-    public static final NodeSpec firstName = name();
-
-    public static final NodeSpec lastName = name();
-
-    public static final NodeSpec emailAddress = mandatoryVarchar100();
+  @ExtendsEntity
+  public static class ServiceProvider extends Partner {
+    public static final NodeSpec partnerType = mandatoryFixedEnum(PartnerType.class, PartnerType.SERVICE_PROVIDER);
 
     public static final NodeSpec languageSkills = ownsMany(LanguageConversionSkill.class, LanguageConversionSkill.serviceProvider);
-
-    public static final NodeSpec contracts = refersToMany(ServiceProviderContract.class, ServiceProviderContract.serviceProvider);
-
   }
+  
+
 
   /**
    * A customer of the user
    * @author scott
    *
    */
-  @Entity("TS_CUSTOMER")
-  public static class Customer implements StandardEntity {
-
-    public static final NodeSpec firstName = name();
-
-    public static final NodeSpec lastName = name();
-
-    public static final NodeSpec emailAddress = mandatoryVarchar100();
-
-    public static final NodeSpec contracts = refersToMany(CustomerContract.class, CustomerContract.customer);
-
+  @ExtendsEntity
+  public static class Customer extends Partner {
+      public static final NodeSpec partnerType = mandatoryFixedEnum(PartnerType.class, PartnerType.CUSTOMER);
   }
 
-  public interface Contract extends StandardEntity {
+  @Entity("TS_CONTRACT")
+  public static class Contract implements StandardEntity {
+
+	/**
+	 * The name of the contract
+	 */
+	public static final NodeSpec name = name();
+
+	
+	/**
+	 * The name of the contract
+	 */
+	public static final NodeSpec description = mandatoryVarchar(600);
+
+	
+	/**
+	 * The partner the contract is with
+	 */
+    public static final NodeSpec partner = mandatoryRefersTo(Partner.class);
+    
+    
+    /**
+     * customer or service provider.
+     */
+    public static final NodeSpec partnerType = mandatoryEnum(PartnerType.class);
+    
+    /**
+     * The billable work on the contract
+     */
+    public static final NodeSpec billableWork = ownsMany(BillableWork.class, BillableWork.contact); 
+ 
     /**
      * Date created.
      */
@@ -180,75 +230,32 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
     /**
      * date estimation completed.
      */
-    public static final NodeSpec etimatedCompletionDate = optionalDate();
+    public static final NodeSpec dueDate = optionalDate();
 
     /**
      * date actual completion.
      */
-    public static final NodeSpec actualCompletionDate = optionalDate();
+    public static final NodeSpec completedDate = optionalDate();
+    
+    
+    /**
+     * date the contract was billed.
+     */
+    public static final NodeSpec billedDate = optionalDate();
+
+    /**
+     * date the bill was payed.
+     */
+    public static final NodeSpec payedDate = optionalDate();
+    
 
     /**
      * Feedback on completion of the contract
      */
     public static final NodeSpec feedback = optionallyRefersTo(Feedback.class);
-
+        
   }
 
-
-  /**
-   * a contract between the customer and the user
-   * @author scott
-   *
-   */
-  @Entity("TS_CUSTOMER_CONTRACT")
-  public static class CustomerContract implements Contract {
-
-    public static final NodeSpec customer = mandatoryRefersTo(Customer.class);
-
-    public static final NodeSpec workItems = refersToMany(WorkItem.class, WorkItem.customerContract);
-
-    /**
-     * date the bill was sent to the client.
-     */
-    public static final NodeSpec billSentDate = optionalDate();
-
-    /**
-     * date the payment from the client was received..
-     */
-    public static final NodeSpec paymentReceivedDate = optionalDate();
-  }
-
-  /**
-   * A contract between the service provider and the user
-   * @author scott
-   *
-   */
-  @Entity("TS_SERVICE_PROVIDER_CONTRACT")
-  public static class ServiceProviderContract implements Contract {
-
-    /**
-     * The service provider which the contract is for.
-     */
-    public static final NodeSpec serviceProvider = mandatoryRefersTo(ServiceProvider.class);
-
-
-    /**
-     * a single service provider contract can contain many work items for a given customer
-     */
-    public static final NodeSpec workItems = refersToMany(WorkItem.class, WorkItem.serviceProviderContract);
-
-
-    /**
-     * date the bill from the service provider was received.
-     */
-    public static final NodeSpec billReceivedDate = optionalDate();
-
-    /**
-     * date the payment to the service provider was sent.
-     */
-    public static final NodeSpec paymentSentDate = optionalDate();
-
-  }
 
 
   /**
@@ -260,22 +267,26 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
   public static class WorkItem implements StandardEntity {
 
     /**
-     * The customer contract which originated this work item
+     * interpreting or translating
      */
-    public static final NodeSpec customerContract = mandatoryRefersTo(CustomerContract.class);
+    public static final NodeSpec workType  = mandatoryEnum(WorkType.class);
 
     /**
-     * The type of charge the customer uses
+     * Description of the work item
      */
-    public static final NodeSpec custChargeType = mandatoryEnum(ChargeType.class);
-
+    public static final NodeSpec description = mandatoryVarchar150();
 
     /**
-     * Amount in cents billed to the customer
+     * The cutomer who performs the work
      */
-    public static final NodeSpec custChargeAmount = mandatoryIntegerValue();
+    public static final NodeSpec customerBillable = mandatoryRefersTo(BillableWork.class, "CUSTOMER_BILLABLE_ID");
 
+    /**
+     * The service provider who performs the work
+     */
+    public static final NodeSpec serviceProviderBillable = mandatoryRefersTo(BillableWork.class, "SERVP_BILLABLE_ID");
 
+    
     /**
      * from language
      */
@@ -286,57 +297,58 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
      */
     public static final NodeSpec toLanguage = mandatoryRefersTo(Language.class, "TO_LANG");
 
-    /**
-     * interpreting or translating
-     */
-    public static final NodeSpec workType  = mandatoryEnum(WorkType.class);
-
-    /**
-     * The service provider who performs the work
-     */
-    public static final NodeSpec serviceProviderContract = mandatoryRefersTo(ServiceProviderContract.class);
-
-    /**
-     * The type of charge the service provider uses
-     */
-    public static final NodeSpec spChargeType = mandatoryEnum(ChargeType.class);
-
-
-    /**
-     * Amount in cents payed to the service provider
-     */
-    public static final NodeSpec spChargeAmount = mandatoryIntegerValue();
-
-
-    /**
-     * Description of the work item
-     */
-    public static final NodeSpec description = mandatoryVarchar150();
-
-    /**
-     * If the work item is completed.
-     */
-    public static final NodeSpec completed = mandatoryBooleanValue();
 
  }
   
- @Entity("TS_AUDIT_EVENT")
- public static class AuditEvent implements StandardEntity {
-	 
-	 public static final NodeSpec dateCreated = mandatoryDate();
-	 
-	 public static final NodeSpec eventType = mandatoryEnum(AuditEventType.class);
+  @Entity("TS_BILLABLE_WORK")
+ public static class BillableWork implements StandardEntity {
+	  
+	   public static final NodeSpec workItem = mandatoryRefersTo(WorkItem.class);
+	   
+	    /**
+	     * The contract which this work is billed to
+	     */
+	    public static final NodeSpec contract = mandatoryRefersTo(Contract.class);
 
-	 public static final NodeSpec customerContract = optionallyRefersTo(CustomerContract.class);
 
-	 public static final NodeSpec serviceProvider = optionallyRefersTo(ServiceProviderContract.class);
+	    /**
+	     * started date.
+	     */
+	    public static final NodeSpec startedDate = optionalDate();
 
-	 public static final NodeSpec workItem = optionallyRefersTo(WorkItem.class);
+	    /**
+	     * The billable work from service provider or to the customer
+	     */
+	    public static final NodeSpec partnerType = mandatoryEnum(PartnerType.class);
+	   
+	  
+	   public static final NodeSpec contact = mandatoryRefersTo(ContactPerson.class);
+	  
+	    /**
+	     * The type of charge 
+	     */
+	    public static final NodeSpec chargeType = mandatoryEnum(ChargeType.class);
 
-	 public static final NodeSpec info = mandatoryVarchar(300);
+
+	    /**
+	     * Amount in cents billed 
+	     */
+	    public static final NodeSpec chargeAmount = mandatoryIntegerValue();
+
+	    /**
+	     *  due date
+	     */
+	    public static final NodeSpec dueDate = mandatoryDate();
+
+	    
+	    /**
+	     * completion date.
+	     */
+	    public static final NodeSpec completedDate = optionalDate();
 
  }
-
+  
+  
  public static NodeSpec mandatoryVarchar100() {
 	return varchar(null, 100, Nullable.NOT_NULL);
  }

@@ -11,14 +11,17 @@ public class TransourceProxyFactory implements ProxyFactory {
 
   @SuppressWarnings("unchecked")
   public <T> T newProxy(Entity entity) throws ProxyCreationException {
-    if (entity.getEntityType().getInterfaceName().equals(AuditEvent.class.getName())) {
-      return (T) new AuditEvent(entity);
+    if (entity.getEntityType().getInterfaceName().equals(BillableWork.class.getName())) {
+      return (T) new BillableWork(entity);
+    }
+    if (entity.getEntityType().getInterfaceName().equals(ContactPerson.class.getName())) {
+      return (T) new ContactPerson(entity);
+    }
+    if (entity.getEntityType().getInterfaceName().equals(Contract.class.getName())) {
+      return (T) new Contract(entity);
     }
     if (entity.getEntityType().getInterfaceName().equals(Customer.class.getName())) {
       return (T) new Customer(entity);
-    }
-    if (entity.getEntityType().getInterfaceName().equals(CustomerContract.class.getName())) {
-      return (T) new CustomerContract(entity);
     }
     if (entity.getEntityType().getInterfaceName().equals(Feedback.class.getName())) {
       return (T) new Feedback(entity);
@@ -29,11 +32,11 @@ public class TransourceProxyFactory implements ProxyFactory {
     if (entity.getEntityType().getInterfaceName().equals(LanguageConversionSkill.class.getName())) {
       return (T) new LanguageConversionSkill(entity);
     }
+    if (entity.getEntityType().getInterfaceName().equals(Partner.class.getName())) {
+      return (T) new Partner(entity);
+    }
     if (entity.getEntityType().getInterfaceName().equals(ServiceProvider.class.getName())) {
       return (T) new ServiceProvider(entity);
-    }
-    if (entity.getEntityType().getInterfaceName().equals(ServiceProviderContract.class.getName())) {
-      return (T) new ServiceProviderContract(entity);
     }
     if (entity.getEntityType().getInterfaceName().equals(WorkItem.class.getName())) {
       return (T) new WorkItem(entity);

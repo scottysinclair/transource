@@ -2,25 +2,26 @@ package scott.transource.dto;
 
 import scott.barleydb.api.dto.BaseDto;
 
+import scott.barleydb.api.dto.DtoList;
+
 
 import scott.transource.model.PartnerType;
-import scott.transource.model.FeedbackRating;
 
 /**
  * Generated from Entity Specification
  *
  * @author scott.sinclair
  */
-public class FeedbackDto extends BaseDto {
+public class PartnerDto extends BaseDto {
   private static final long serialVersionUID = 1L;
 
   private Long id;
   private Long modifiedAt;
   private PartnerType partnerType;
-  private FeedbackRating rating;
-  private String info;
+  private ContactPersonDto contact;
+  private DtoList<ContractDto> contracts = new DtoList<>();
 
-  public FeedbackDto() {
+  public PartnerDto() {
   }
 
   public Long getId() {
@@ -47,20 +48,16 @@ public class FeedbackDto extends BaseDto {
     this.partnerType = partnerType;
   }
 
-  public scott.transource.model.FeedbackRating getRating() {
-    return rating;
+  public ContactPersonDto getContact() {
+    return contact;
   }
 
-  public void setRating(scott.transource.model.FeedbackRating rating) {
-    this.rating = rating;
+  public void setContact(ContactPersonDto contact) {
+    this.contact = contact;
   }
 
-  public String getInfo() {
-    return info;
-  }
-
-  public void setInfo(String info) {
-    this.info = info;
+  public DtoList<ContractDto> getContracts() {
+    return contracts;
   }
   public String toString() {
     return getClass().getSimpleName() + "[id = " + getId() + "]";

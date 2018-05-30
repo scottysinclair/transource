@@ -5,73 +5,34 @@ import scott.barleydb.api.dto.BaseDto;
 import scott.barleydb.api.dto.DtoList;
 
 
+import scott.transource.model.PartnerType;
+
 /**
  * Generated from Entity Specification
  *
  * @author scott.sinclair
  */
-public class ServiceProviderDto extends BaseDto {
+public class ServiceProviderDto extends PartnerDto {
   private static final long serialVersionUID = 1L;
 
-  private Long id;
-  private Long modifiedAt;
-  private String firstName;
-  private String lastName;
-  private String emailAddress;
+  private PartnerType partnerType;
   private DtoList<LanguageConversionSkillDto> languageSkills = new DtoList<>();
-  private DtoList<ServiceProviderContractDto> contracts = new DtoList<>();
 
   public ServiceProviderDto() {
   }
 
-  public Long getId() {
-    return id;
+  public scott.transource.model.PartnerType getPartnerType() {
+    return partnerType;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Long getModifiedAt() {
-    return modifiedAt;
-  }
-
-  public void setModifiedAt(Long modifiedAt) {
-    this.modifiedAt = modifiedAt;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public String getEmailAddress() {
-    return emailAddress;
-  }
-
-  public void setEmailAddress(String emailAddress) {
-    this.emailAddress = emailAddress;
+  public void setPartnerType(scott.transource.model.PartnerType partnerType) {
+    this.partnerType = partnerType;
   }
 
   public DtoList<LanguageConversionSkillDto> getLanguageSkills() {
     return languageSkills;
   }
-
-  public DtoList<ServiceProviderContractDto> getContracts() {
-    return contracts;
-  }
   public String toString() {
-    return getClass().getSimpleName() + "[id = " + id + "]";
+    return getClass().getSimpleName() + "[id = " + getId() + "]";
   }
 }

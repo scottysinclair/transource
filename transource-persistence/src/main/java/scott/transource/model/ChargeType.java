@@ -6,7 +6,7 @@ package scott.transource.model;
  * @author scott.sinclair
  */
 public enum ChargeType {
-  PER_LINE, //has database key 1
-  PAUSHALL, //has database key 2
-  PER_HOUR //has database key 3
+  PER_LINE, //has database key PER_LINE
+  PAUSHALL, //has database key PAUSHALL
+  PER_HOUR //has database key PER_HOUR
 }
