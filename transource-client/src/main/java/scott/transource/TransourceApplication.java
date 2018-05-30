@@ -24,55 +24,56 @@ public class TransourceApplication extends Application {
 
   @Override
   public void start(Stage stage) throws Exception {
-	 ClientEnvironment env = new  ClientEnvironment(stage);
-	 
-	 SceneManager sceneManager = new SceneManager(stage, env);
-	 
-	 env.addObject(sceneManager);
-	 
-	 stage.setTitle("FXML Welcome");
-	 sceneManager.showScene(WelcomePageController.class);
-	 stage.show();
+   ClientEnvironment env = new  ClientEnvironment(stage);
+
+   SceneManager sceneManager = new SceneManager(stage, env);
+
+   env.addObject(sceneManager);
+
+   stage.setTitle("Transource V1.0");
+   sceneManager.showScene(WelcomePageController.class);
+   stage.setMaximized(true);
+   stage.show();
 
   }
-  
+
   public static void main(String args[]) throws Exception {
 
-	String host = "localhost"; 
-	String user = "postgres";
-	String pass = "postgres";
-	
-	//String host = "172.18.0.3"; 
+  String host = "localhost";
+  String user = "postgres";
+  String pass = "postgres";
+
+  //String host = "172.18.0.3";
 //	String user = "test_user";
 //	String pass = "password";
-	
-	if (real) {
-	    env  = EnvironmentDef.build()
-	        .withDataSource()
-	            .withDriver("org.postgresql.xa.PGXADataSource")
-	            .withUser( user )
-	            .withPassword( pass )
-	            .withUrl("jdbc:postgresql://" + host + ":5432/test_db")
-	            .end()
-	         .withSpecs(TransourceSpec.class)
-	         .withDroppingSchema(dropAndCreate)
-	         .withSchemaCreation(dropAndCreate)
-	         .create();
 
-	    if (dropAndCreate) {
-	        EntityContext ctx = new TransourceEntityContext(env);
+  if (real) {
+      env  = EnvironmentDef.build()
+          .withDataSource()
+              .withDriver("org.postgresql.xa.PGXADataSource")
+              .withUser( user )
+              .withPassword( pass )
+              .withUrl("jdbc:postgresql://" + host + ":5432/test_db")
+              .end()
+           .withSpecs(TransourceSpec.class)
+           .withDroppingSchema(dropAndCreate)
+           .withSchemaCreation(dropAndCreate)
+           .create();
 
-	        Language en = ctx.newModel(Language.class);
-	        en.setName("English");
-	        Language de = ctx.newModel(Language.class);
-	        de.setName("German");
-	        Language cz = ctx.newModel(Language.class);
-	        cz.setName("Czech");
+      if (dropAndCreate) {
+          EntityContext ctx = new TransourceEntityContext(env);
 
-	        ctx.persist(new PersistRequest().insert(en, de, cz));
+          Language en = ctx.newModel(Language.class);
+          en.setName("English");
+          Language de = ctx.newModel(Language.class);
+          de.setName("German");
+          Language cz = ctx.newModel(Language.class);
+          cz.setName("Czech");
 
-	      }
-	}
+          ctx.persist(new PersistRequest().insert(en, de, cz));
+
+        }
+  }
 
 
     TransourceApplication app = new TransourceApplication();

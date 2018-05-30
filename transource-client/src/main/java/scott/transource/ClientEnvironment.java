@@ -7,7 +7,7 @@ import java.util.Map;
 import javafx.stage.Stage;
 import scott.transource.customercontract.CustomerContractDetailsController;
 import scott.transource.service.TransourceReportingService;
-import scott.transource.service.impl.TransourceReportingServiceImpl;
+import scott.transource.service.impl.FakeTransourceReportingServiceImpl;
 import scott.transource.welcome.WelcomePageController;
 
 public class ClientEnvironment {
@@ -42,7 +42,7 @@ public class ClientEnvironment {
 	}
 
 	protected TransourceReportingService newReportingService() {
-		return new TransourceReportingServiceImpl();
+		return new FakeTransourceReportingServiceImpl();
 	}
 	
 	@SuppressWarnings("unchecked")
