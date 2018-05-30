@@ -1,0 +1,11 @@
+.toolbar{
+	-fx-pref-height: 28px;
+	-fx-padding: 0;
+}
+
+#settingsButton {
+	-fx-pref-width: 28px;
+	-fx-pref-height: 28px;
+	-fx-background-image: url('icon/settings.png');
+	-fx-background-size: 100%, 100%;
+}

@@ -10,6 +10,8 @@ import scott.barleydb.build.specification.staticspec.Enumeration;
 
 import static scott.barleydb.api.specification.CoreSpec.*;
 
+import org.example.acl.AclSpec.TopLevelModel;
+
 
 /*-
  * #%L
@@ -59,10 +61,15 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
     public static NodeSpec modifiedAt = optimisticLock();
   }
 
-  @Enumeration(JdbcType.INT)
+  @Enumeration(value = JdbcType.VARCHAR, length = 10)
   public class WorkType {
-    public static final int TRANSLATION = 1;
-    public static final int INTERPRETING = 2;
+    public static final String TRANSLATION = "TRANS";
+    public static final String INTERPRETING = "INTERP";
+  }
+
+  @Enumeration(value = JdbcType.VARCHAR, length = 15)
+  public class AuditEventType {
+    public static final String NEW_WORK_ITEM = "NEW_WORK_ITEM";
   }
 
   @Enumeration(JdbcType.INT)
@@ -212,6 +219,39 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
   }
 
   /**
+   * A contract between the service provider and the user
+   * @author scott
+   *
+   */
+  @Entity("TS_SERVICE_PROVIDER_CONTRACT")
+  public static class ServiceProviderContract implements Contract {
+
+    /**
+     * The service provider which the contract is for.
+     */
+    public static final NodeSpec serviceProvider = mandatoryRefersTo(ServiceProvider.class);
+
+
+    /**
+     * a single service provider contract can contain many work items for a given customer
+     */
+    public static final NodeSpec workItems = refersToMany(WorkItem.class, WorkItem.serviceProviderContract);
+
+
+    /**
+     * date the bill from the service provider was received.
+     */
+    public static final NodeSpec billReceivedDate = optionalDate();
+
+    /**
+     * date the payment to the service provider was sent.
+     */
+    public static final NodeSpec paymentSentDate = optionalDate();
+
+  }
+
+
+  /**
    * A work item which a service provider performs to meet a client contract
    * @author scott
    *
@@ -278,43 +318,27 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
      */
     public static final NodeSpec completed = mandatoryBooleanValue();
 
-  }
+ }
+  
+ @Entity("TS_AUDIT_EVENT")
+ public static class AuditEvent implements StandardEntity {
+	 
+	 public static final NodeSpec dateCreated = mandatoryDate();
+	 
+	 public static final NodeSpec eventType = mandatoryEnum(AuditEventType.class);
 
-  /**
-   * A contract between the service provider and the user
-   * @author scott
-   *
-   */
-  @Entity("TS_SERVICE_PROVIDER_CONTRACT")
-  public static class ServiceProviderContract implements Contract {
+	 public static final NodeSpec customerContract = optionallyRefersTo(CustomerContract.class);
 
-    /**
-     * The service provider which the contract is for.
-     */
-    public static final NodeSpec serviceProvider = mandatoryRefersTo(ServiceProvider.class);
+	 public static final NodeSpec serviceProvider = optionallyRefersTo(ServiceProviderContract.class);
 
+	 public static final NodeSpec workItem = optionallyRefersTo(WorkItem.class);
 
-    /**
-     * a single service provider contract can contain many work items for a given customer
-     */
-    public static final NodeSpec workItems = refersToMany(WorkItem.class, WorkItem.serviceProviderContract);
+	 public static final NodeSpec info = mandatoryVarchar(300);
 
+ }
 
-    /**
-     * date the bill from the service provider was received.
-     */
-    public static final NodeSpec billReceivedDate = optionalDate();
-
-    /**
-     * date the payment to the service provider was sent.
-     */
-    public static final NodeSpec paymentSentDate = optionalDate();
-
-  }
-
-
-  public static NodeSpec mandatoryVarchar100() {
-    return varchar(null, 100, Nullable.NOT_NULL);
-}
+ public static NodeSpec mandatoryVarchar100() {
+	return varchar(null, 100, Nullable.NOT_NULL);
+ }
 
 }

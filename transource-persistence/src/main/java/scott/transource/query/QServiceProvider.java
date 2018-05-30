@@ -10,7 +10,7 @@ import scott.transource.query.QServiceProviderContract;
 /**
  * Generated from Entity Specification
  *
- * @author scott
+ * @author scott.sinclair
  */
 public class QServiceProvider extends QueryObject<ServiceProvider> {
   private static final long serialVersionUID = 1L;

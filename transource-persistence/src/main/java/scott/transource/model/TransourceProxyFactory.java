@@ -11,6 +11,9 @@ public class TransourceProxyFactory implements ProxyFactory {
 
   @SuppressWarnings("unchecked")
   public <T> T newProxy(Entity entity) throws ProxyCreationException {
+    if (entity.getEntityType().getInterfaceName().equals(AuditEvent.class.getName())) {
+      return (T) new AuditEvent(entity);
+    }
     if (entity.getEntityType().getInterfaceName().equals(Customer.class.getName())) {
       return (T) new Customer(entity);
     }

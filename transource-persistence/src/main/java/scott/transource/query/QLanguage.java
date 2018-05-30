@@ -8,7 +8,7 @@ import scott.transource.model.Language;
 /**
  * Generated from Entity Specification
  *
- * @author scott
+ * @author scott.sinclair
  */
 public class QLanguage extends QueryObject<Language> {
   private static final long serialVersionUID = 1L;

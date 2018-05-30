@@ -8,7 +8,7 @@ import scott.barleydb.api.dto.DtoList;
 /**
  * Generated from Entity Specification
  *
- * @author scott
+ * @author scott.sinclair
  */
 public class CustomerDto extends BaseDto {
   private static final long serialVersionUID = 1L;

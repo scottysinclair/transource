@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Generated from Entity Specification
  *
- * @author scott
+ * @author scott.sinclair
  */
 public class CustomerContractDto extends BaseDto {
   private static final long serialVersionUID = 1L;

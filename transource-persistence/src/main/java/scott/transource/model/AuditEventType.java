@@ -5,7 +5,6 @@ package scott.transource.model;
  *
  * @author scott.sinclair
  */
-public enum WorkType {
-  TRANSLATION, //has database key TRANS
-  INTERPRETING //has database key INTERP
+public enum AuditEventType {
+  NEW_WORK_ITEM //has database key NEW_WORK_ITEM
 }

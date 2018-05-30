@@ -3,7 +3,7 @@ package scott.transource.model;
 /**
  * Generated from Entity Specification
  *
- * @author scott
+ * @author scott.sinclair
  */
 public enum ChargeType {
   PER_LINE, //has database key 1
