@@ -13,7 +13,7 @@ import scott.transource.query.QFeedback;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class QContract extends QueryObject<Contract> {
   private static final long serialVersionUID = 1L;

@@ -2,23 +2,25 @@ package scott.transource.dto;
 
 import scott.barleydb.api.dto.BaseDto;
 
+import scott.barleydb.api.dto.DtoList;
+
 
 import scott.transource.model.WorkType;
 
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class WorkItemDto extends BaseDto {
   private static final long serialVersionUID = 1L;
 
   private Long id;
   private Long modifiedAt;
+  private String name;
   private WorkType workType;
   private String description;
-  private BillableWorkDto customerBillable;
-  private BillableWorkDto serviceProviderBillable;
+  private DtoList<BillableWorkDto> billableWork = new DtoList<>();
   private LanguageDto fromLanguage;
   private LanguageDto toLanguage;
 
@@ -41,6 +43,14 @@ public class WorkItemDto extends BaseDto {
     this.modifiedAt = modifiedAt;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public scott.transource.model.WorkType getWorkType() {
     return workType;
   }
@@ -57,20 +67,8 @@ public class WorkItemDto extends BaseDto {
     this.description = description;
   }
 
-  public BillableWorkDto getCustomerBillable() {
-    return customerBillable;
-  }
-
-  public void setCustomerBillable(BillableWorkDto customerBillable) {
-    this.customerBillable = customerBillable;
-  }
-
-  public BillableWorkDto getServiceProviderBillable() {
-    return serviceProviderBillable;
-  }
-
-  public void setServiceProviderBillable(BillableWorkDto serviceProviderBillable) {
-    this.serviceProviderBillable = serviceProviderBillable;
+  public DtoList<BillableWorkDto> getBillableWork() {
+    return billableWork;
   }
 
   public LanguageDto getFromLanguage() {

@@ -1,11 +1,13 @@
 package scott.transource.welcome;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -29,6 +31,7 @@ import scott.transource.dto.ContractDto;
 import scott.transource.service.TransourceReportingService;
 import scott.transource.service.dto.FullSummaryReport;
 import scott.transource.service.stream.Stream;
+import static scott.transource.TransourceUiHelper.*;
 
 public class WelcomePageController implements Initializable {
 
@@ -130,38 +133,6 @@ public class WelcomePageController implements Initializable {
 
   }
 
-  private long getNumberOfDays(Date date) {
-    LocalDateTime  now = LocalDateTime.now();
-    LocalDateTime  ldate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-    Duration dur = Duration.between(now, ldate);
-    return dur.toDays();
-  }
-
-  private String formatNumberOfDays(Date date) {
-    long n = getNumberOfDays(date);
-    if (n < 0) {
-      return (n * -1) + " days ago";
-    }
-    else if (n == 0) {
-      return "today";
-    }
-    else {
-      return n + " days";
-    }
-  }
-
-  private int getPecentageTimeUsed(Date start, Date end) {
-    if (end.getTime() <= System.currentTimeMillis()) {
-      return 100;
-    }
-    LocalDateTime  now = LocalDateTime.now();
-    LocalDateTime  lstart = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-    LocalDateTime  lend = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-    Duration fullDur = Duration.between(lstart, lend);
-    Duration sofarDur = Duration.between(lstart, now);
-    return (int)( ((float)sofarDur.toDays() / (float)fullDur.toDays()) * 100f );
-  }
-
   private int getOverdueCustomerContracts() {
     return (int)summaryReport.getOverdueContracts().stream()
     .filter( Stream::customerContracts )
@@ -195,6 +166,24 @@ public class WelcomePageController implements Initializable {
      deadlinesTableData.addAll( deadlines );
      System.out.println(deadlinesTableData);
      deadlinesTable.setItems(deadlinesTableData);
+     deadlinesTable.setRowFactory(tv -> {
+       TableRow<Deadline> row = new TableRow<>();
+       row.setOnMouseClicked(e -> {
+         if (e.getClickCount() == 2 && !row.isEmpty()) {
+           try {
+             env.getObject(SceneManager.class).showScene(CustomerContractDetailsController.class, c -> {
+               Long contractId = reportingService.getCustomerContractIdForBillableWork( row.getItem().billableWork);
+               c.loadCustomerContract( contractId );
+               c.selectBillableWork(row.getItem().billableWork);
+             });
+           }
+           catch(BarleyDBException x) {
+             System.out.println("Error loading contract for billable work  " + row.getItem().billableWork.getId());
+           }
+           System.out.println("click");
+         }});
+       return row;
+     });
 
      tcCust.setCellValueFactory(new PropertyValueFactory<>("name"));
      tcValue.setCellValueFactory(new PropertyValueFactory<>("value"));
@@ -212,21 +201,30 @@ public class WelcomePageController implements Initializable {
        TableRow<CustomerContractRow> row = new TableRow<>();
        row.setOnMouseClicked(e -> {
          if (e.getClickCount() == 2 && !row.isEmpty()) {
-           env.getObject(SceneManager.class).showScene(CustomerContractDetailsController.class);
+           try {
+             env.getObject(SceneManager.class).showScene(CustomerContractDetailsController.class, c -> {
+               c.loadCustomerContract( row.getItem().getId() );
+             });
+           }
+           catch(BarleyDBException x) {
+             System.out.println("Error loading contract " + row.getItem().getId());
+           }
            System.out.println("click");
          }});
        return row;
      });
-
-
-
   }
+
 
   public class Deadline {
     private final BillableWorkDto billableWork;
 
     public Deadline(BillableWorkDto billableWork) {
       this.billableWork = billableWork;
+    }
+
+    public ContractDto getContract() {
+      return billableWork.getContract();
     }
 
     public String getWhat() {
@@ -252,6 +250,10 @@ public class WelcomePageController implements Initializable {
 
     public CustomerContractRow(ContractDto contract) {
       this.contract = contract;
+    }
+
+    public Long getId() {
+      return contract.getId();
     }
 
     public String getName() {

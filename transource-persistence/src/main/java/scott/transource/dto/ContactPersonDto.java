@@ -6,13 +6,14 @@ import scott.barleydb.api.dto.BaseDto;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class ContactPersonDto extends BaseDto {
   private static final long serialVersionUID = 1L;
 
   private Long id;
   private Long modifiedAt;
+  private PartnerDto worksFor;
   private String firstName;
   private String lastName;
   private String emailAddress;
@@ -34,6 +35,14 @@ public class ContactPersonDto extends BaseDto {
 
   public void setModifiedAt(Long modifiedAt) {
     this.modifiedAt = modifiedAt;
+  }
+
+  public PartnerDto getWorksFor() {
+    return worksFor;
+  }
+
+  public void setWorksFor(PartnerDto worksFor) {
+    this.worksFor = worksFor;
   }
 
   public String getFirstName() {

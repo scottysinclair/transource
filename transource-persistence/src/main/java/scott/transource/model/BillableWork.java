@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class BillableWork extends AbstractCustomEntityProxy {
   private static final long serialVersionUID = 1L;
@@ -19,9 +19,11 @@ public class BillableWork extends AbstractCustomEntityProxy {
   private final ValueNode modifiedAt;
   private final RefNodeProxyHelper workItem;
   private final RefNodeProxyHelper contract;
+  private final ValueNode commitment;
   private final ValueNode startedDate;
   private final ValueNode partnerType;
   private final RefNodeProxyHelper contact;
+  private final RefNodeProxyHelper workSize;
   private final ValueNode chargeType;
   private final ValueNode chargeAmount;
   private final ValueNode dueDate;
@@ -33,9 +35,11 @@ public class BillableWork extends AbstractCustomEntityProxy {
     modifiedAt = entity.getChild("modifiedAt", ValueNode.class, true);
     workItem = new RefNodeProxyHelper(entity.getChild("workItem", RefNode.class, true));
     contract = new RefNodeProxyHelper(entity.getChild("contract", RefNode.class, true));
+    commitment = entity.getChild("commitment", ValueNode.class, true);
     startedDate = entity.getChild("startedDate", ValueNode.class, true);
     partnerType = entity.getChild("partnerType", ValueNode.class, true);
     contact = new RefNodeProxyHelper(entity.getChild("contact", RefNode.class, true));
+    workSize = new RefNodeProxyHelper(entity.getChild("workSize", RefNode.class, true));
     chargeType = entity.getChild("chargeType", ValueNode.class, true);
     chargeAmount = entity.getChild("chargeAmount", ValueNode.class, true);
     dueDate = entity.getChild("dueDate", ValueNode.class, true);
@@ -70,6 +74,14 @@ public class BillableWork extends AbstractCustomEntityProxy {
     setToRefNode(this.contract.refNode, contract);
   }
 
+  public String getCommitment() {
+    return commitment.getValue();
+  }
+
+  public void setCommitment(String commitment) {
+    this.commitment.setValue(commitment);
+  }
+
   public Date getStartedDate() {
     return startedDate.getValue();
   }
@@ -92,6 +104,14 @@ public class BillableWork extends AbstractCustomEntityProxy {
 
   public void setContact(ContactPerson contact) {
     setToRefNode(this.contact.refNode, contact);
+  }
+
+  public WorkSize getWorkSize() {
+    return super.getFromRefNode(workSize.refNode);
+  }
+
+  public void setWorkSize(WorkSize workSize) {
+    setToRefNode(this.workSize.refNode, workSize);
   }
 
   public scott.transource.model.ChargeType getChargeType() {

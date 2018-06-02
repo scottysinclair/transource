@@ -8,14 +8,15 @@ import scott.barleydb.api.dto.BaseDto;
  *
  * @author scott
  */
-public class LanguageDto extends BaseDto {
+public class WorkSizeDto extends BaseDto {
   private static final long serialVersionUID = 1L;
 
   private Long id;
   private Long modifiedAt;
-  private String name;
+  private String units;
+  private String size;
 
-  public LanguageDto() {
+  public WorkSizeDto() {
   }
 
   public Long getId() {
@@ -34,12 +35,20 @@ public class LanguageDto extends BaseDto {
     this.modifiedAt = modifiedAt;
   }
 
-  public String getName() {
-    return name;
+  public String getUnits() {
+    return units;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setUnits(String units) {
+    this.units = units;
+  }
+
+  public String getSize() {
+    return size;
+  }
+
+  public void setSize(String size) {
+    this.size = size;
   }
   public String toString() {
     return getClass().getSimpleName() + "[id = " + getId() + "]";

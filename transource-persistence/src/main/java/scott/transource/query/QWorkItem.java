@@ -11,7 +11,7 @@ import scott.transource.query.QLanguage;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class QWorkItem extends QueryObject<WorkItem> {
   private static final long serialVersionUID = 1L;
@@ -32,6 +32,10 @@ public class QWorkItem extends QueryObject<WorkItem> {
     return new QProperty<Long>(this, "modifiedAt");
   }
 
+  public QProperty<String> name() {
+    return new QProperty<String>(this, "name");
+  }
+
   public QProperty<scott.transource.model.WorkType> workType() {
     return new QProperty<scott.transource.model.WorkType>(this, "workType");
   }
@@ -40,48 +44,22 @@ public class QWorkItem extends QueryObject<WorkItem> {
     return new QProperty<String>(this, "description");
   }
 
-  public QProperty<Long> customerBillableId() {
-    return new QProperty<Long>(this, "customerBillable");
+  public QBillableWork joinToBillableWork() {
+    QBillableWork billableWork = new QBillableWork();
+    addLeftOuterJoin(billableWork, "billableWork");
+    return billableWork;
   }
 
-  public QBillableWork joinToCustomerBillable() {
-    QBillableWork customerBillable = new QBillableWork();
-    addLeftOuterJoin(customerBillable, "customerBillable");
-    return customerBillable;
+  public QBillableWork joinToBillableWork(JoinType joinType) {
+    QBillableWork billableWork = new QBillableWork();
+    addJoin(billableWork, "billableWork", joinType);
+    return billableWork;
   }
 
-  public QBillableWork joinToCustomerBillable(JoinType joinType) {
-    QBillableWork customerBillable = new QBillableWork();
-    addJoin(customerBillable, "customerBillable", joinType);
-    return customerBillable;
-  }
-
-  public QBillableWork existsCustomerBillable() {
-    QBillableWork customerBillable = new QBillableWork(this);
-    addExists(customerBillable, "customerBillable");
-    return customerBillable;
-  }
-
-  public QProperty<Long> serviceProviderBillableId() {
-    return new QProperty<Long>(this, "serviceProviderBillable");
-  }
-
-  public QBillableWork joinToServiceProviderBillable() {
-    QBillableWork serviceProviderBillable = new QBillableWork();
-    addLeftOuterJoin(serviceProviderBillable, "serviceProviderBillable");
-    return serviceProviderBillable;
-  }
-
-  public QBillableWork joinToServiceProviderBillable(JoinType joinType) {
-    QBillableWork serviceProviderBillable = new QBillableWork();
-    addJoin(serviceProviderBillable, "serviceProviderBillable", joinType);
-    return serviceProviderBillable;
-  }
-
-  public QBillableWork existsServiceProviderBillable() {
-    QBillableWork serviceProviderBillable = new QBillableWork(this);
-    addExists(serviceProviderBillable, "serviceProviderBillable");
-    return serviceProviderBillable;
+  public QBillableWork existsBillableWork() {
+    QBillableWork billableWork = new QBillableWork(this);
+    addExists(billableWork, "billableWork");
+    return billableWork;
   }
 
   public QProperty<Long> fromLanguageId() {

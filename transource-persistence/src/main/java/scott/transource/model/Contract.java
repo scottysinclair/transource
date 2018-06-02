@@ -20,7 +20,7 @@ import java.util.Date;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class Contract extends AbstractCustomEntityProxy {
   private static final long serialVersionUID = 1L;

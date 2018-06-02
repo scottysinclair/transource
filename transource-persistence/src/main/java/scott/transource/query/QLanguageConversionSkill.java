@@ -11,7 +11,7 @@ import scott.transource.model.WorkType;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class QLanguageConversionSkill extends QueryObject<LanguageConversionSkill> {
   private static final long serialVersionUID = 1L;

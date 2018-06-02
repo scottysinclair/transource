@@ -10,7 +10,7 @@ import scott.transource.model.ChargeType;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class BillableWorkDto extends BaseDto {
   private static final long serialVersionUID = 1L;
@@ -19,9 +19,11 @@ public class BillableWorkDto extends BaseDto {
   private Long modifiedAt;
   private WorkItemDto workItem;
   private ContractDto contract;
+  private String commitment;
   private Date startedDate;
   private PartnerType partnerType;
   private ContactPersonDto contact;
+  private WorkSizeDto workSize;
   private ChargeType chargeType;
   private Integer chargeAmount;
   private Date dueDate;
@@ -62,6 +64,14 @@ public class BillableWorkDto extends BaseDto {
     this.contract = contract;
   }
 
+  public String getCommitment() {
+    return commitment;
+  }
+
+  public void setCommitment(String commitment) {
+    this.commitment = commitment;
+  }
+
   public Date getStartedDate() {
     return startedDate;
   }
@@ -84,6 +94,14 @@ public class BillableWorkDto extends BaseDto {
 
   public void setContact(ContactPersonDto contact) {
     this.contact = contact;
+  }
+
+  public WorkSizeDto getWorkSize() {
+    return workSize;
+  }
+
+  public void setWorkSize(WorkSizeDto workSize) {
+    this.workSize = workSize;
   }
 
   public scott.transource.model.ChargeType getChargeType() {

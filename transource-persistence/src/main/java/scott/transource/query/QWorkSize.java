@@ -3,21 +3,21 @@ package scott.transource.query;
 import scott.barleydb.api.query.JoinType;
 import scott.barleydb.api.query.QProperty;
 import scott.barleydb.api.query.QueryObject;
-import scott.transource.model.Language;
+import scott.transource.model.WorkSize;
 
 /**
  * Generated from Entity Specification
  *
  * @author scott
  */
-public class QLanguage extends QueryObject<Language> {
+public class QWorkSize extends QueryObject<WorkSize> {
   private static final long serialVersionUID = 1L;
-  public QLanguage() {
-    super(Language.class);
+  public QWorkSize() {
+    super(WorkSize.class);
   }
 
-  public QLanguage(QueryObject<?> parent) {
-    super(Language.class, parent);
+  public QWorkSize(QueryObject<?> parent) {
+    super(WorkSize.class, parent);
   }
 
 
@@ -29,7 +29,11 @@ public class QLanguage extends QueryObject<Language> {
     return new QProperty<Long>(this, "modifiedAt");
   }
 
-  public QProperty<String> name() {
-    return new QProperty<String>(this, "name");
+  public QProperty<String> units() {
+    return new QProperty<String>(this, "units");
+  }
+
+  public QProperty<String> size() {
+    return new QProperty<String>(this, "size");
   }
 }

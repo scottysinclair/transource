@@ -9,12 +9,13 @@ import scott.transource.query.QContract;
 import java.util.Date;
 import scott.transource.model.PartnerType;
 import scott.transource.query.QContactPerson;
+import scott.transource.query.QWorkSize;
 import scott.transource.model.ChargeType;
 
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class QBillableWork extends QueryObject<BillableWork> {
   private static final long serialVersionUID = 1L;
@@ -79,6 +80,10 @@ public class QBillableWork extends QueryObject<BillableWork> {
     return contract;
   }
 
+  public QProperty<String> commitment() {
+    return new QProperty<String>(this, "commitment");
+  }
+
   public QProperty<Date> startedDate() {
     return new QProperty<Date>(this, "startedDate");
   }
@@ -107,6 +112,28 @@ public class QBillableWork extends QueryObject<BillableWork> {
     QContactPerson contact = new QContactPerson(this);
     addExists(contact, "contact");
     return contact;
+  }
+
+  public QProperty<Long> workSizeId() {
+    return new QProperty<Long>(this, "workSize");
+  }
+
+  public QWorkSize joinToWorkSize() {
+    QWorkSize workSize = new QWorkSize();
+    addLeftOuterJoin(workSize, "workSize");
+    return workSize;
+  }
+
+  public QWorkSize joinToWorkSize(JoinType joinType) {
+    QWorkSize workSize = new QWorkSize();
+    addJoin(workSize, "workSize", joinType);
+    return workSize;
+  }
+
+  public QWorkSize existsWorkSize() {
+    QWorkSize workSize = new QWorkSize(this);
+    addExists(workSize, "workSize");
+    return workSize;
   }
 
   public QProperty<scott.transource.model.ChargeType> chargeType() {

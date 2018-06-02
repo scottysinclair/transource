@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class ContractDto extends BaseDto {
   private static final long serialVersionUID = 1L;

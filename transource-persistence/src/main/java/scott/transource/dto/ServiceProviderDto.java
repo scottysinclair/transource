@@ -10,7 +10,7 @@ import scott.transource.model.PartnerType;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class ServiceProviderDto extends PartnerDto {
   private static final long serialVersionUID = 1L;

@@ -6,7 +6,7 @@ import scott.transource.model.Partner;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class QPartner extends QAbstractPartner<Partner, QPartner> {
   private static final long serialVersionUID = 1L;

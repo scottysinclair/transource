@@ -11,7 +11,7 @@ import scott.transource.query.QContract;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 class QAbstractPartner<T extends Partner, CHILD extends QAbstractPartner<T, CHILD>> extends QueryObject<T>{
   private static final long serialVersionUID = 1L;
@@ -30,30 +30,30 @@ class QAbstractPartner<T extends Partner, CHILD extends QAbstractPartner<T, CHIL
     return new QProperty<Long>(this, "modifiedAt");
   }
 
+  public QProperty<String> name() {
+    return new QProperty<String>(this, "name");
+  }
+
   public QProperty<scott.transource.model.PartnerType> partnerType() {
     return new QProperty<scott.transource.model.PartnerType>(this, "partnerType");
   }
 
-  public QProperty<Long> contactId() {
-    return new QProperty<Long>(this, "contact");
+  public QContactPerson joinToContacts() {
+    QContactPerson contacts = new QContactPerson();
+    addLeftOuterJoin(contacts, "contacts");
+    return contacts;
   }
 
-  public QContactPerson joinToContact() {
-    QContactPerson contact = new QContactPerson();
-    addLeftOuterJoin(contact, "contact");
-    return contact;
+  public QContactPerson joinToContacts(JoinType joinType) {
+    QContactPerson contacts = new QContactPerson();
+    addJoin(contacts, "contacts", joinType);
+    return contacts;
   }
 
-  public QContactPerson joinToContact(JoinType joinType) {
-    QContactPerson contact = new QContactPerson();
-    addJoin(contact, "contact", joinType);
-    return contact;
-  }
-
-  public QContactPerson existsContact() {
-    QContactPerson contact = new QContactPerson(this);
-    addExists(contact, "contact");
-    return contact;
+  public QContactPerson existsContacts() {
+    QContactPerson contacts = new QContactPerson(this);
+    addExists(contacts, "contacts");
+    return contacts;
   }
 
   public QContract joinToContracts() {

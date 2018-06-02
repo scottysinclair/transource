@@ -10,15 +10,16 @@ import scott.transource.model.PartnerType;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class PartnerDto extends BaseDto {
   private static final long serialVersionUID = 1L;
 
   private Long id;
   private Long modifiedAt;
+  private String name;
   private PartnerType partnerType;
-  private ContactPersonDto contact;
+  private DtoList<ContactPersonDto> contacts = new DtoList<>();
   private DtoList<ContractDto> contracts = new DtoList<>();
 
   public PartnerDto() {
@@ -40,6 +41,14 @@ public class PartnerDto extends BaseDto {
     this.modifiedAt = modifiedAt;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public scott.transource.model.PartnerType getPartnerType() {
     return partnerType;
   }
@@ -48,12 +57,8 @@ public class PartnerDto extends BaseDto {
     this.partnerType = partnerType;
   }
 
-  public ContactPersonDto getContact() {
-    return contact;
-  }
-
-  public void setContact(ContactPersonDto contact) {
-    this.contact = contact;
+  public DtoList<ContactPersonDto> getContacts() {
+    return contacts;
   }
 
   public DtoList<ContractDto> getContracts() {

@@ -14,6 +14,9 @@ public class TransourceProxyFactory implements ProxyFactory {
     if (entity.getEntityType().getInterfaceName().equals(BillableWork.class.getName())) {
       return (T) new BillableWork(entity);
     }
+    if (entity.getEntityType().getInterfaceName().equals(BillableWorkComment.class.getName())) {
+      return (T) new BillableWorkComment(entity);
+    }
     if (entity.getEntityType().getInterfaceName().equals(ContactPerson.class.getName())) {
       return (T) new ContactPerson(entity);
     }
@@ -40,6 +43,9 @@ public class TransourceProxyFactory implements ProxyFactory {
     }
     if (entity.getEntityType().getInterfaceName().equals(WorkItem.class.getName())) {
       return (T) new WorkItem(entity);
+    }
+    if (entity.getEntityType().getInterfaceName().equals(WorkSize.class.getName())) {
+      return (T) new WorkSize(entity);
     }
     return null;
   }

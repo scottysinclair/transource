@@ -5,10 +5,12 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import scott.transource.customercontract.CustomerContractDetailsController;
 import scott.transource.welcome.WelcomePageController;
 
@@ -30,8 +32,16 @@ public class SceneManager {
 //		getOrLoadScene(CustomerContractDetailsController.class);
   }
 
-  public void showScene(Class<?> controller) {
-    LoadedScene<?> loadedScene = getOrLoadScene(controller);
+  public <T> void showScene(Class<T> controllerClass) {
+    showScene(controllerClass, null);
+  }
+
+  public <T, X extends Throwable> void showScene(Class<T> controllerClass, TryAndConsume<T, X> prepareController) throws X {
+    LoadedScene<?> loadedScene = getOrLoadScene(controllerClass);
+    if (prepareController != null) {
+      T controller = (T)loadedScene.getController();
+      prepareController.accept(controller);
+    }
     stage.setScene(loadedScene.getScene());
   }
 

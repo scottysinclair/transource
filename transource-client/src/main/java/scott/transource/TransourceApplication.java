@@ -14,17 +14,18 @@ import scott.barleydb.api.persist.PersistRequest;
 import scott.barleydb.bootstrap.EnvironmentDef;
 import scott.transource.model.Language;
 import scott.transource.spec.TransourceSpec;
+import scott.transource.testdata.TestDataHelper;
 import scott.transource.welcome.WelcomePageController;
 
 public class TransourceApplication extends Application {
 
-  private static final boolean real =  false;
-  private static final boolean dropAndCreate =  false;
+  private static final boolean real =  true;
+  private static final boolean dropAndCreate =  true;
   private static Environment env;
 
   @Override
   public void start(Stage stage) throws Exception {
-   ClientEnvironment env = new  ClientEnvironment(stage);
+   ClientEnvironment env = new  ClientEnvironment(stage, TransourceApplication.env);
 
    SceneManager sceneManager = new SceneManager(stage, env);
 
@@ -38,14 +39,14 @@ public class TransourceApplication extends Application {
   }
 
   public static void main(String args[]) throws Exception {
+//
+//  String host = "localhost";
+//  String user = "postgres";
+//  String pass = "postgres";
 
-  String host = "localhost";
-  String user = "postgres";
-  String pass = "postgres";
-
-  //String host = "172.18.0.3";
-//	String user = "test_user";
-//	String pass = "password";
+  String host = "172.18.0.2";
+  String user = "test_user";
+  String pass = "password";
 
   if (real) {
       env  = EnvironmentDef.build()
@@ -61,18 +62,9 @@ public class TransourceApplication extends Application {
            .create();
 
       if (dropAndCreate) {
-          EntityContext ctx = new TransourceEntityContext(env);
-
-          Language en = ctx.newModel(Language.class);
-          en.setName("English");
-          Language de = ctx.newModel(Language.class);
-          de.setName("German");
-          Language cz = ctx.newModel(Language.class);
-          cz.setName("Czech");
-
-          ctx.persist(new PersistRequest().insert(en, de, cz));
-
-        }
+        TestDataHelper tdh = new TestDataHelper(env);
+        tdh.execute();
+      }
   }
 
 

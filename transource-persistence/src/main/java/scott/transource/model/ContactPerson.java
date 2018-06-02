@@ -3,17 +3,20 @@ package scott.transource.model;
 import scott.barleydb.api.core.entity.Entity;
 import scott.barleydb.api.core.entity.ValueNode;
 import scott.barleydb.api.core.proxy.AbstractCustomEntityProxy;
+import scott.barleydb.api.core.entity.RefNode;
+import scott.barleydb.api.core.proxy.RefNodeProxyHelper;
 
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class ContactPerson extends AbstractCustomEntityProxy {
   private static final long serialVersionUID = 1L;
 
   private final ValueNode id;
   private final ValueNode modifiedAt;
+  private final RefNodeProxyHelper worksFor;
   private final ValueNode firstName;
   private final ValueNode lastName;
   private final ValueNode emailAddress;
@@ -22,6 +25,7 @@ public class ContactPerson extends AbstractCustomEntityProxy {
     super(entity);
     id = entity.getChild("id", ValueNode.class, true);
     modifiedAt = entity.getChild("modifiedAt", ValueNode.class, true);
+    worksFor = new RefNodeProxyHelper(entity.getChild("worksFor", RefNode.class, true));
     firstName = entity.getChild("firstName", ValueNode.class, true);
     lastName = entity.getChild("lastName", ValueNode.class, true);
     emailAddress = entity.getChild("emailAddress", ValueNode.class, true);
@@ -37,6 +41,14 @@ public class ContactPerson extends AbstractCustomEntityProxy {
 
   public void setModifiedAt(Long modifiedAt) {
     this.modifiedAt.setValue(modifiedAt);
+  }
+
+  public Partner getWorksFor() {
+    return super.getFromRefNode(worksFor.refNode);
+  }
+
+  public void setWorksFor(Partner worksFor) {
+    setToRefNode(this.worksFor.refNode, worksFor);
   }
 
   public String getFirstName() {

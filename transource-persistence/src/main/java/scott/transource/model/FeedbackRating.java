@@ -3,7 +3,7 @@ package scott.transource.model;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public enum FeedbackRating {
   VERY_BAD, //has database key -3
@@ -12,5 +12,5 @@ public enum FeedbackRating {
   NEUTRAL, //has database key 0
   BIT_GOOD, //has database key 1
   GOOD, //has database key 2
-  VERY_GOOD //has database key 3
+  VERY_GOOD; //has database key 3
 }

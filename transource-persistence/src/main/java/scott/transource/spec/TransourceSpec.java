@@ -111,7 +111,7 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
   public static class Feedback implements StandardEntity {
     public static final NodeSpec partnerType  = mandatoryEnum(PartnerType.class);
     public static final NodeSpec rating = mandatoryEnum(FeedbackRating.class);
-    public static final NodeSpec info = mandatoryVarchar(1500);
+    public static final NodeSpec info = mandatoryVarchar(1000);
   }
 
   /**
@@ -147,6 +147,9 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
 
   @Entity("TS_CONTACT_PERSON")
   public static class ContactPerson implements StandardEntity {
+
+      public static final NodeSpec worksFor = mandatoryRefersTo(Partner.class);
+
       public static final NodeSpec firstName = name();
 
       public static final NodeSpec lastName = name();
@@ -157,11 +160,13 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
   @AbstractEntity("TS_PARTNER")
   public static class Partner implements StandardEntity {
 
+    public static final NodeSpec name = name();
+
     public static final NodeSpec partnerType = mandatoryEnum(PartnerType.class);
 
-    public static final NodeSpec contact = mandatoryRefersTo(ContactPerson.class);
+    public static final NodeSpec contacts = refersToMany(ContactPerson.class, ContactPerson.worksFor);
 
-      public static final NodeSpec contracts = refersToMany(Contract.class, Contract.partner);
+    public static final NodeSpec contracts = refersToMany(Contract.class, Contract.partner);
   }
 
 
@@ -201,7 +206,7 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
   /**
    * The name of the contract
    */
-  public static final NodeSpec description = mandatoryVarchar(600);
+  public static final NodeSpec description = mandatoryVarchar(1000);
 
 
   /**
@@ -218,7 +223,7 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
     /**
      * The billable work on the contract
      */
-    public static final NodeSpec billableWork = ownsMany(BillableWork.class, BillableWork.contact);
+    public static final NodeSpec billableWork = ownsMany(BillableWork.class, BillableWork.contract);
 
     /**
      * Date created.
@@ -299,14 +304,29 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
     public static final NodeSpec toLanguage = mandatoryRefersTo(Language.class, "TO_LANG");
 
 
-    /**
-     * the size of the work (can be important for billing).
-     */
-    public static final NodeSpec workSize = optionallyRefersTo(WorkSize.class);
-
-
  }
 
+  @Entity("TS_BILLABLEWORK_COMMENT")
+  public static class BillableWorkComment implements StandardEntity {
+
+    /**
+     * date of the comment
+     */
+    public static final NodeSpec commentDate = mandatoryDate();
+    /**
+     * the content of the comment
+     */
+    public static final NodeSpec content = mandatoryVarchar(1000);
+
+    /**
+     * the billable work which was commented
+     */
+    public static final NodeSpec billableWork = mandatoryRefersTo(BillableWork.class);
+
+
+  }
+
+ @Entity("TS_WORK_SIZE")
  public static class WorkSize implements StandardEntity {
 
    /**
@@ -332,6 +352,10 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
        */
       public static final NodeSpec contract = mandatoryRefersTo(Contract.class);
 
+      /**
+       * Description of the commitment
+       */
+      public static final NodeSpec commitment = mandatoryVarchar(1000);
 
       /**
        * started date.
@@ -345,6 +369,13 @@ public class TransourceSpec extends CommonDefaultsPlatformSpec {
 
 
      public static final NodeSpec contact = mandatoryRefersTo(ContactPerson.class);
+
+
+     /**
+      * the size of the work (can be important for billing).
+      */
+     public static final NodeSpec workSize = optionallyRefersTo(WorkSize.class);
+
 
       /**
        * The type of charge

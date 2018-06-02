@@ -14,6 +14,7 @@ import scott.barleydb.api.query.QueryObject;
 import scott.transource.TransourceEntityContext;
 import scott.transource.dto.BillableWorkDto;
 import scott.transource.dto.ContractDto;
+import scott.transource.dto.WorkItemDto;
 import scott.transource.model.BillableWork;
 import scott.transource.model.PartnerType;
 import scott.transource.query.QBillableWork;
@@ -58,12 +59,24 @@ public class TransourceDao {
     return queryAndConvert(query, ContractDto.class);
   }
 
-  public List<BillableWorkDto> getOpenBillableWork() throws SortServiceProviderException, BarleyDBQueryException {
+  public List<BillableWorkDto> getOpenBillableWorkWithAssocContactAndWorkItem() throws SortServiceProviderException, BarleyDBQueryException {
     QBillableWork query = new QBillableWork();
+    query.joinToContact();
+    query.joinToWorkItem();
     query.where(query.completedDate().isNull() );
 
     return queryAndConvert(query, BillableWorkDto.class);
   }
+
+  public List<BillableWorkDto> getBillableWorkWithAssocContactAndWorkItemFor(WorkItemDto workItem) throws SortServiceProviderException, BarleyDBQueryException {
+    QBillableWork query = new QBillableWork();
+    query.joinToContact();
+    query.joinToWorkItem();
+    query.where(query.workItemId().equal( workItem.getId() ));
+
+    return queryAndConvert(query, BillableWorkDto.class);
+  }
+
 
   public List<ContractDto> getOpenCustomerContracts(boolean oldestFirst) throws SortServiceProviderException, BarleyDBQueryException {
     QContract query = new QContract();
@@ -74,10 +87,34 @@ public class TransourceDao {
     return queryAndConvert(query, ContractDto.class);
   }
 
+  public ContractDto loadFullContract(Long id) throws SortServiceProviderException, BarleyDBQueryException {
+    QContract query = new QContract();
+    query.joinToPartner();
+    query.joinToFeedback();
+    QBillableWork qbw = query.joinToBillableWork();
+    qbw.joinToWorkItem();
+    qbw.joinToContact();
+
+    query.where(query.id().equal(id));
+    return querySingleAndConvert(query, ContractDto.class);
+  }
+
+
   private EntityContext newCtx() {
     EntityContext ctx = new TransourceEntityContext(env);
     ctx.setAllowGarbageCollection(false);
     return ctx;
+  }
+
+  private <T extends BaseDto, E extends ProxyController> T querySingleAndConvert(QueryObject<E> query, Class<T> type) throws SortServiceProviderException, BarleyDBQueryException {
+    EntityContext ctx = newCtx();
+
+    E item = ctx.performQuery( query ).getSingleResult();
+
+    DtoConverter conv = new DtoConverter(ctx);
+    conv.convertToDtos();
+
+    return conv.getDto(item);
   }
 
   private <T extends BaseDto, E extends ProxyController> List<T> queryAndConvert(QueryObject<E> query, Class<T> type) throws SortServiceProviderException, BarleyDBQueryException {

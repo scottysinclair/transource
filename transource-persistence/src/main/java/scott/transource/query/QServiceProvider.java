@@ -10,7 +10,7 @@ import scott.transource.query.QLanguageConversionSkill;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class QServiceProvider extends QAbstractPartner<ServiceProvider, QServiceProvider> {
   private static final long serialVersionUID = 1L;

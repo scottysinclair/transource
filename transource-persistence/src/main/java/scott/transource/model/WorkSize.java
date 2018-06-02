@@ -9,18 +9,20 @@ import scott.barleydb.api.core.proxy.AbstractCustomEntityProxy;
  *
  * @author scott
  */
-public class Language extends AbstractCustomEntityProxy {
+public class WorkSize extends AbstractCustomEntityProxy {
   private static final long serialVersionUID = 1L;
 
   private final ValueNode id;
   private final ValueNode modifiedAt;
-  private final ValueNode name;
+  private final ValueNode units;
+  private final ValueNode size;
 
-  public Language(Entity entity) {
+  public WorkSize(Entity entity) {
     super(entity);
     id = entity.getChild("id", ValueNode.class, true);
     modifiedAt = entity.getChild("modifiedAt", ValueNode.class, true);
-    name = entity.getChild("name", ValueNode.class, true);
+    units = entity.getChild("units", ValueNode.class, true);
+    size = entity.getChild("size", ValueNode.class, true);
   }
 
   public Long getId() {
@@ -35,11 +37,19 @@ public class Language extends AbstractCustomEntityProxy {
     this.modifiedAt.setValue(modifiedAt);
   }
 
-  public String getName() {
-    return name.getValue();
+  public String getUnits() {
+    return units.getValue();
   }
 
-  public void setName(String name) {
-    this.name.setValue(name);
+  public void setUnits(String units) {
+    this.units.setValue(units);
+  }
+
+  public String getSize() {
+    return size.getValue();
+  }
+
+  public void setSize(String size) {
+    this.size.setValue(size);
   }
 }

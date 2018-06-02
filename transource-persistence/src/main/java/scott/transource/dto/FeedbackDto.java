@@ -9,7 +9,7 @@ import scott.transource.model.FeedbackRating;
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class FeedbackDto extends BaseDto {
   private static final long serialVersionUID = 1L;

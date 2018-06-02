@@ -1,6 +1,5 @@
 package scott.transource.service;
 
-import java.util.Collection;
 import java.util.List;
 
 import scott.barleydb.api.exception.execution.SortServiceProviderException;
@@ -18,5 +17,9 @@ public interface TransourceReportingService {
   public int calculateContractValue(ContractDto contract);
 
   public List<ContractDto> getOpenCustomerContracts(boolean oldestFirst) throws SortServiceProviderException, BarleyDBQueryException;
+
+  public ContractDto loadFullContract(Long id) throws SortServiceProviderException, BarleyDBQueryException;
+
+  public Long getCustomerContractIdForBillableWork(BillableWorkDto billableWork) throws SortServiceProviderException, BarleyDBQueryException;
 
 }

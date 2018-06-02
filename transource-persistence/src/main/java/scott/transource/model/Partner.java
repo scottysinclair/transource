@@ -11,31 +11,31 @@ import scott.barleydb.api.exception.execution.query.BarleyDBQueryException;
 import scott.barleydb.api.core.entity.Entity;
 import scott.barleydb.api.core.entity.ValueNode;
 import scott.barleydb.api.core.proxy.AbstractCustomEntityProxy;
-import scott.barleydb.api.core.entity.RefNode;
-import scott.barleydb.api.core.proxy.RefNodeProxyHelper;
 import scott.barleydb.api.core.entity.ToManyNode;
 import scott.barleydb.api.core.proxy.ToManyNodeProxyHelper;
 
 /**
  * Generated from Entity Specification
  *
- * @author scott.sinclair
+ * @author scott
  */
 public class Partner extends AbstractCustomEntityProxy {
   private static final long serialVersionUID = 1L;
 
   private final ValueNode id;
   private final ValueNode modifiedAt;
+  private final ValueNode name;
   private final ValueNode partnerType;
-  private final RefNodeProxyHelper contact;
+  private final ToManyNodeProxyHelper contacts;
   private final ToManyNodeProxyHelper contracts;
 
   public Partner(Entity entity) {
     super(entity);
     id = entity.getChild("id", ValueNode.class, true);
     modifiedAt = entity.getChild("modifiedAt", ValueNode.class, true);
+    name = entity.getChild("name", ValueNode.class, true);
     partnerType = entity.getChild("partnerType", ValueNode.class, true);
-    contact = new RefNodeProxyHelper(entity.getChild("contact", RefNode.class, true));
+    contacts = new ToManyNodeProxyHelper(entity.getChild("contacts", ToManyNode.class, true));
     contracts = new ToManyNodeProxyHelper(entity.getChild("contracts", ToManyNode.class, true));
   }
 
@@ -51,6 +51,14 @@ public class Partner extends AbstractCustomEntityProxy {
     this.modifiedAt.setValue(modifiedAt);
   }
 
+  public String getName() {
+    return name.getValue();
+  }
+
+  public void setName(String name) {
+    this.name.setValue(name);
+  }
+
   public scott.transource.model.PartnerType getPartnerType() {
     return partnerType.getValue();
   }
@@ -59,16 +67,21 @@ public class Partner extends AbstractCustomEntityProxy {
     this.partnerType.setValue(partnerType);
   }
 
-  public ContactPerson getContact() {
-    return super.getFromRefNode(contact.refNode);
-  }
-
-  public void setContact(ContactPerson contact) {
-    setToRefNode(this.contact.refNode, contact);
+  public List<ContactPerson> getContacts() {
+    return super.getListProxy(contacts.toManyNode);
   }
 
   public List<Contract> getContracts() {
     return super.getListProxy(contracts.toManyNode);
+  }
+  public ObjectInputStream<ContactPerson> streamContacts() throws SortServiceProviderException, BarleyDBQueryException, EntityStreamException {
+    final QueryEntityInputStream in = contacts.toManyNode.stream();
+    return new ObjectInputStream<>(in);
+  }
+
+  public ObjectInputStream<ContactPerson> streamContacts(QueryObject<ContactPerson> query) throws SortServiceProviderException, BarleyDBQueryException, EntityStreamException {
+    final QueryEntityInputStream in = contacts.toManyNode.stream(query);
+    return new ObjectInputStream<>(in);
   }
   public ObjectInputStream<Contract> streamContracts() throws SortServiceProviderException, BarleyDBQueryException, EntityStreamException {
     final QueryEntityInputStream in = contracts.toManyNode.stream();
